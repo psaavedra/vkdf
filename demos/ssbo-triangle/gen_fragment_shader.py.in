@@ -1,0 +1,33 @@
+# encoding=utf-8
+
+"""Create fragment shader based on all the base type combination."""
+
+from __future__ import print_function
+import argparse
+import os
+import textwrap
+import subprocess
+
+from mako.template import Template
+
+FRAG_TEMPLATE = 'shader.frag.mako'
+OUT_FILE = 'shader_'
+COMMAND='@top_srcdir@/@GLSLANG@'
+
+def main():
+    types = [['32bit', 'float', 'vec4'],
+             ['16bit', 'float16_t', 'f16vec4']]
+
+    template_filepath = os.path.join(os.path.dirname(__file__), FRAG_TEMPLATE)
+    template = Template(filename=template_filepath,
+                        strict_undefined=True)
+    for t in types:
+        glsl_filename = os.path.join(os.path.dirname(__file__), OUT_FILE+t[0]+'.frag')
+
+        with open(glsl_filename, 'w') as glsl_file:
+            glsl_file.write(template.render(scalar_type_name=t[1], vector_type_name=t[2]))
+
+        subprocess.call([COMMAND, '-V', glsl_filename, '-o', glsl_filename+'.spv'])
+
+if __name__ == '__main__':
+    main()

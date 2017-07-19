@@ -5,7 +5,8 @@ SUBDIRS = triangle \
           mesh \
           model \
           light \
-          shadow
+          shadow \
+          ssbo-triangle
 
 MAINTAINERCLEANFILES = \
         *.in \

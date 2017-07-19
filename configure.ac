@@ -70,6 +70,8 @@ AC_CONFIG_FILES([
    demos/model/Makefile
    demos/light/Makefile
    demos/shadow/Makefile
+   demos/ssbo-triangle/Makefile
+   demos/ssbo-triangle/gen_fragment_shader.py
 ])
 
 AC_OUTPUT
