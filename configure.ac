@@ -43,7 +43,7 @@ AM_CONDITIONAL([DEBUG], [test "x$enable_debug" = "xyes"])
 # DEPENDENCIES
 # ----------------------------------------------------------
 
-PKG_CHECK_MODULES(VKDF_DEPS, glib-2.0 vulkan glm glfw3 assimp)
+PKG_CHECK_MODULES(VKDF_DEPS, glib-2.0 vulkan glfw3 assimp)
 AC_SUBST(VKDF_DEPS_CFLAGS)
 AC_SUBST(VKDF_DEPS_LIBS)
 
