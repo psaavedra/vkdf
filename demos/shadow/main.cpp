@@ -446,38 +446,19 @@ render_pass_commands(VkdfContext *ctx, SceneResources *res)
    vkCmdBindPipeline(res->cmd_buf, VK_PIPELINE_BIND_POINT_GRAPHICS,
                      res->pipeline);
 
-   // Bind static descriptor sets for tiles and cubes (light and shadow map)
+   // Bind static descriptor sets
    VkDescriptorSet descriptor_sets[] = {
+      res->MVP_cubes_descriptor_set,
       res->Light_descriptor_set,
-      res->shadow_sampler_descriptor_set
+      res->shadow_sampler_descriptor_set,
+      res->cube_materials_descriptor_set
    };
    vkCmdBindDescriptorSets(res->cmd_buf,
                            VK_PIPELINE_BIND_POINT_GRAPHICS,
                            res->pipeline_layout,
-                           1,                        // First decriptor set
-                           2,                        // Descriptor set count
-                           descriptor_sets,          // Descriptor sets
-                           0,                        // Dynamic offset count
-                           NULL);                    // Dynamic offsets
-
-   // --- Render scene cubes
-
-   // Bind descriptor sets with cube data (Model matrices and materials)
-   vkCmdBindDescriptorSets(res->cmd_buf,
-                           VK_PIPELINE_BIND_POINT_GRAPHICS,
-                           res->pipeline_layout,
                            0,                        // First decriptor set
-                           1,                        // Descriptor set count
-                           &res->MVP_cubes_descriptor_set,          // Descriptor sets
-                           0,                        // Dynamic offset count
-                           NULL);                    // Dynamic offsets
-
-   vkCmdBindDescriptorSets(res->cmd_buf,
-                           VK_PIPELINE_BIND_POINT_GRAPHICS,
-                           res->pipeline_layout,
-                           3,                        // First decriptor set
-                           1,                        // Descriptor set count
-                           &res->cube_materials_descriptor_set, // Descriptor sets
+                           4,                        // Descriptor set count
+                           descriptor_sets,          // Descriptor sets
                            0,                        // Dynamic offset count
                            NULL);                    // Dynamic offsets
 
