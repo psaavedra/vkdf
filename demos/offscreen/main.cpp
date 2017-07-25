@@ -532,6 +532,10 @@ destroy_command_buffer_resources(VkdfContext *ctx, DemoResources *res)
                         res->cmd_pool,
                         ctx->swap_chain_length,
                         res->present_cmd_bufs);
+   vkFreeCommandBuffers(ctx->device,
+                        res->cmd_pool,
+                        1,
+                        &res->render_cmd_buf);
    vkDestroyCommandPool(ctx->device, res->cmd_pool, NULL);
 }
 
