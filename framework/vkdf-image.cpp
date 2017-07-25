@@ -34,6 +34,7 @@ vkdf_create_image(VkdfContext *ctx,
    image_info.mipLevels = num_levels;
    image_info.arrayLayers = 1;
    image_info.samples = VK_SAMPLE_COUNT_1_BIT;
+   image_info.tiling = VK_IMAGE_TILING_LINEAR;
    image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
    image_info.usage = usage_flags;
    image_info.queueFamilyIndexCount = 0;
