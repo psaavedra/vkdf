@@ -5,6 +5,8 @@ typedef struct {
    VkImage image;
    VkFormat format;
    VkDeviceMemory mem;
+   VkMemoryRequirements mem_reqs;
+   uint32_t mem_props;
    VkImageView view;
 } VkdfImage;
 
@@ -59,5 +61,19 @@ vkdf_image_set_layout(VkdfContext *ctx,
                       VkImageLayout new_layout,
                       VkPipelineStageFlags src_stage_mask,
                       VkPipelineStageFlags dst_stage_mask);
+
+void
+vkdf_image_map_and_get(VkdfContext *ctx,
+                       VkdfImage image,
+                       VkDeviceSize offset,
+                       VkDeviceSize size,
+                       void *data);
+
+void
+vkdf_image_map_and_fill(VkdfContext *ctx,
+                        VkdfImage image,
+                        VkDeviceSize offset,
+                        VkDeviceSize size,
+                        const void *data);
 
 #endif

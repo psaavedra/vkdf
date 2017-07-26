@@ -45,20 +45,21 @@ vkdf_create_image(VkdfContext *ctx,
    VK_CHECK(vkCreateImage(ctx->device, &image_info, NULL, &image.image));
 
    // Allocate and bind memory for the image
-   VkMemoryRequirements mem_reqs;
-   vkGetImageMemoryRequirements(ctx->device, image.image, &mem_reqs);
+   vkGetImageMemoryRequirements(ctx->device, image.image, &image.mem_reqs);
 
    VkMemoryAllocateInfo mem_alloc = {};
    mem_alloc.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
    mem_alloc.pNext = NULL;
-   mem_alloc.allocationSize = mem_reqs.size;
+   mem_alloc.allocationSize = image.mem_reqs.size;
    assert(vkdf_memory_type_from_properties(ctx,
-                                           mem_reqs.memoryTypeBits,
+                                           image.mem_reqs.memoryTypeBits,
                                            mem_props,
                                            &mem_alloc.memoryTypeIndex));
 
    VK_CHECK(vkAllocateMemory(ctx->device, &mem_alloc, NULL, &image.mem));
    VK_CHECK(vkBindImageMemory(ctx->device, image.image, image.mem, 0));
+
+   image.mem_props = mem_props;
 
    // Create image view
    VkImageViewCreateInfo view_info = {};
@@ -206,4 +207,52 @@ vkdf_image_set_layout(VkdfContext *ctx,
                         0, NULL,
                         1, &barrier);
 }
+void
+vkdf_image_map_and_fill(VkdfContext *ctx,
+                        VkdfImage image,
+                        VkDeviceSize offset,
+                        VkDeviceSize size,
+                        const void *data)
+{
+   assert(image.mem_props & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
 
+   void *mapped_memory;
+   VK_CHECK(vkMapMemory(ctx->device, image.mem, offset, size, 0, &mapped_memory));
+
+   assert(image.mem_reqs.size >= size);
+   memcpy(mapped_memory, data, size);
+
+   if (!(image.mem_props & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)) {
+      VkMappedMemoryRange range;
+      range.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+      range.pNext = NULL;
+      range.memory = image.mem;
+      range.offset = offset;
+      range.size = size;
+      VK_CHECK(vkFlushMappedMemoryRanges(ctx->device, 1, &range));
+   }
+
+   vkUnmapMemory(ctx->device, image.mem);
+}
+
+void
+vkdf_image_map_and_get(VkdfContext *ctx,
+                       VkdfImage image,
+                       VkDeviceSize offset,
+                       VkDeviceSize size,
+                       void *data)
+{
+   assert(image.mem_props & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+   //Note: this is needed. It is debatable if we should call it here or
+   //      let the application do that before calling this method.
+   VK_CHECK(vkDeviceWaitIdle(ctx->device));
+
+   void *mapped_memory;
+   VK_CHECK(vkMapMemory(ctx->device, image.mem, offset,
+                        size, 0, &mapped_memory));
+
+   assert(image.mem_reqs.size >= size);
+   memcpy(data, mapped_memory, size);
+
+   vkUnmapMemory(ctx->device, image.mem);
+}
