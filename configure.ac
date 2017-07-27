@@ -2,10 +2,8 @@ m4_define([prj_name],    [vkdf])
 m4_define([prj_version], [0.0.1-0])
 
 AC_INIT([prj_name], [prj_version])
-
-AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
-
 AC_CONFIG_SRCDIR([framework])
+AM_INIT_AUTOMAKE
 
 AM_CONFIG_HEADER(framework/config.h)
 
