@@ -23,6 +23,20 @@ vkdf_create_image(VkdfContext *ctx,
                   VkImageAspectFlags aspect_flags,
                   VkImageViewType image_view_type);
 
+VkdfImage
+vkdf_create_image_detailed(VkdfContext *ctx,
+                           uint32_t width,
+                           uint32_t height,
+                           uint32_t num_levels,
+                           VkImageType image_type,
+                           VkFormat format,
+                           VkFormatFeatureFlags format_flags,
+                           VkImageUsageFlags usage_flags,
+                           uint32_t mem_props,
+                           VkImageAspectFlags aspect_flags,
+                           VkImageViewType image_view_type,
+                           VkImageLayout image_layout);
+
 void
 vkdf_destroy_image(VkdfContext *ctx, VkdfImage *image);
 

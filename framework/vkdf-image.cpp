@@ -1,5 +1,6 @@
 #include "vkdf.hpp"
 
+
 VkdfImage
 vkdf_create_image(VkdfContext *ctx,
                   uint32_t width,
@@ -12,6 +13,26 @@ vkdf_create_image(VkdfContext *ctx,
                   uint32_t mem_props,
                   VkImageAspectFlags aspect_flags,
                   VkImageViewType image_view_type)
+{
+   return vkdf_create_image_detailed(ctx, width, height, num_levels, image_type,
+                                     format, format_flags, usage_flags,
+                                     mem_props, aspect_flags, image_view_type,
+                                     VK_IMAGE_LAYOUT_UNDEFINED);
+}
+
+VkdfImage
+vkdf_create_image_detailed(VkdfContext *ctx,
+                           uint32_t width,
+                           uint32_t height,
+                           uint32_t num_levels,
+                           VkImageType image_type,
+                           VkFormat format,
+                           VkFormatFeatureFlags format_flags,
+                           VkImageUsageFlags usage_flags,
+                           uint32_t mem_props,
+                           VkImageAspectFlags aspect_flags,
+                           VkImageViewType image_view_type,
+                           VkImageLayout image_layout)
 {
    VkdfImage image;
 
@@ -35,7 +56,7 @@ vkdf_create_image(VkdfContext *ctx,
    image_info.arrayLayers = 1;
    image_info.samples = VK_SAMPLE_COUNT_1_BIT;
    image_info.tiling = VK_IMAGE_TILING_LINEAR;
-   image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+   image_info.initialLayout = image_layout;
    image_info.usage = usage_flags;
    image_info.queueFamilyIndexCount = 0;
    image_info.pQueueFamilyIndices = NULL;
