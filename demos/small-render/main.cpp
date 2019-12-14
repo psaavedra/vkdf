@@ -292,7 +292,11 @@ main()
    VkdfContext ctx;
    DemoResources resources;
 
-   vkdf_init(&ctx, WIDTH, HEIGHT, false, false, false);
+   bool enable_validation = getenv("VKDF_ENABLE_VALIDATION") != NULL;
+   fprintf(stderr, "Enabled validation: %i\n", enable_validation);
+
+   vkdf_init(&ctx, WIDTH, HEIGHT, false, false, enable_validation);
+
    init_resources(&ctx, &resources);
 
    scene_render(&ctx, &resources);
