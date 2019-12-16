@@ -1,16 +1,4 @@
-SUBDIRS = triangle \
-          offscreen \
-          texture \
-          depth \
-          mesh \
-          model \
-          pbr \
-          shadow \
-          scene \
-          scenelight \
-          sponza \
-          cpu-particle-source \
-          small-clear \
+SUBDIRS = small-clear \
           small-render \
           small-render-wsi
 

@@ -106,18 +106,6 @@ AC_CONFIG_FILES([
    data/spirv/Makefile
    framework/Makefile
    demos/Makefile
-   demos/triangle/Makefile
-   demos/offscreen/Makefile
-   demos/texture/Makefile
-   demos/depth/Makefile
-   demos/mesh/Makefile
-   demos/model/Makefile
-   demos/pbr/Makefile
-   demos/shadow/Makefile
-   demos/scene/Makefile
-   demos/scenelight/Makefile
-   demos/sponza/Makefile
-   demos/cpu-particle-source/Makefile
    demos/small-clear/Makefile
    demos/small-render/Makefile
    demos/small-render-wsi/Makefile
