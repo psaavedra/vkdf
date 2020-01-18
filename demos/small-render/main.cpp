@@ -217,6 +217,76 @@ init_resources(VkdfContext *ctx, DemoResources *res)
    record_command_buffer(ctx, res);
 }
 
+#define PRECISION 1
+
+static void
+check_correct_image(uint8_t *pixels)
+{
+   uint8_t reference_pixels[WIDTH * HEIGHT * 4];
+   unsigned count_wrong = 0;
+   FILE *in = fopen("reference.tga", "r");
+
+   if (in == NULL) {
+      fprintf(stdout, "No reference image. Skipping checking\n");
+      fclose(in);
+      return;
+   }
+
+   uint8_t TGAhead[] = { 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			 WIDTH, 0, HEIGHT, 0, 24, 0 };
+
+   fprintf(stdout, "Comparing against reference.tga\n");
+   fread(&TGAhead, sizeof(TGAhead), 1, in);
+   for (int i = 0; i < WIDTH; i++) {
+      for (int j = 0; j < HEIGHT; j++) {
+	 fread(&reference_pixels[(i * WIDTH + j) * 4] + 2, 1, 1, in); // B
+	 fread(&reference_pixels[(i * WIDTH + j) * 4] + 1, 1, 1, in); // G
+	 fread(&reference_pixels[(i * WIDTH + j) * 4] + 0, 1, 1, in); // R
+      }
+   }
+
+   fclose(in);
+
+   bool print_any_wrong = false;
+   for (unsigned pixel = 0; pixel < WIDTH*HEIGHT; pixel++) {
+      bool any_component_wrong = false;
+      /* FIXME: now that we compare against an image let's skip checking against alpha */
+      for (unsigned component = 0; component < 3; component++) {
+	 if ((pixels[pixel*4 + component] > reference_pixels[pixel*4 + component]) &&
+	     (pixels[pixel*4 + component] - reference_pixels[pixel*4 + component] > PRECISION)) {
+		any_component_wrong = true;
+	 }
+
+	 if ((reference_pixels[pixel*4 + component] > pixels[pixel*4 + component]) &&
+	     (reference_pixels[pixel*4 + component] - pixels[pixel*4 + component] > PRECISION)) {
+		any_component_wrong = true;
+	 }
+      }
+      if (any_component_wrong && !print_any_wrong) {
+	 fprintf(stderr, "Wrong pixel: [");
+	 for (unsigned component = 0; component < 3; component++) {
+	    fprintf(stderr, "%i ", pixels[pixel*4 + component]);
+	 }
+	 fprintf(stderr, "]\n");
+
+	 fprintf(stderr, "Expected pixel: [");
+	 for (unsigned component = 0; component < 3; component++) {
+	    fprintf(stderr, "%i ", reference_pixels[pixel*4 + component]);
+	 }
+	 fprintf(stderr, "]\n");
+	 print_any_wrong = true;
+      }
+      if (any_component_wrong)
+         count_wrong++;
+   }
+
+   if (count_wrong > 0) {
+      fprintf(stderr, "%i pixels wrong out of %i total\n", count_wrong, WIDTH*HEIGHT);
+   } else {
+      fprintf(stderr, "Success! rendered image equal to reference.tga\n");
+   }
+}
+
 static void
 write_pixels_to_file(VkdfContext *ctx, DemoResources *res)
 {
@@ -233,6 +303,7 @@ write_pixels_to_file(VkdfContext *ctx, DemoResources *res)
    range.size = image_bytes;
    vkInvalidateMappedMemoryRanges(ctx->device, 1, &range);
 
+   check_correct_image(data);
    FILE *out = fopen("out.tga","wb");
    uint8_t TGAhead[] = { 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                          WIDTH, 0, HEIGHT, 0, 24, 0 };
