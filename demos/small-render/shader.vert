@@ -10,7 +10,7 @@ void main()
    switch (gl_VertexIndex) {
    case 0:
       pos = vec4( 0.0, 0.5, 0.0, 1.0);
-      color = vec4 (1.0, 0.0, 0.0, 0.5);
+      color = vec4 (1.0, 0.0, 0.0, 1.0);
       break;
    case 1:
       pos = vec4(-0.5,-0.5, 0.0, 1.0);
