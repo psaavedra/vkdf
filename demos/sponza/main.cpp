@@ -3,12 +3,12 @@
 // ================================= CONFIG ===================================
 
 /* Window resolution */
-const float      WIN_WIDTH                 = 1024.0f;
-const float      WIN_HEIGHT                = 768.0f;
-const bool       WIN_FULLSCREEN            = false;
+const float      WIN_WIDTH                 = 800.0f;
+const float      WIN_HEIGHT                = 600.0f;
+const bool       WIN_FULLSCREEN            = true;
 
 /* Framerate target */
-const float      FRAMERATE_TARGET          = 30.0f;
+const float      FRAMERATE_TARGET          = 60.0f;
 
 /* Sponza flag mesh */
 const bool       SHOW_SPONZA_FLAG_MESH     = false;
@@ -25,14 +25,14 @@ const bool       SHOW_DEBUG_TILE           = false;
 /* Pipeline options */
 const bool       ENABLE_CLIPPING           = true;
 const bool       ENABLE_DEPTH_PREPASS      = true;
-const bool       ENABLE_DEFERRED_RENDERING = true;
+const bool       ENABLE_DEFERRED_RENDERING = false;
 
 /* Anisotropic filtering */
-const float      MAX_ANISOTROPY            = 16.0f; // Min=0.0 (disabled)
+const float      MAX_ANISOTROPY            = 0.0f; // Min=0.0 (disabled)
 
 /* Shadow mapping */
 const bool       ENABLE_SHADOWS            = true;
-const uint32_t   SHADOW_MAP_SIZE           = 4096;
+const uint32_t   SHADOW_MAP_SIZE           = 1024;
 const int32_t    SHADOW_MAP_SKIP_FRAMES    = -1;    // N < 0: never update, N >= 0: skip N frames
 const uint32_t   SHADOW_MAP_PCF_SIZE       = 2;     // Min=1 (disabled)
 const uint32_t   SHADOW_MAP_CONST_BIAS     = 1.0f;
@@ -42,11 +42,11 @@ const uint32_t   SHADOW_MAP_SLOPE_BIAS     = 2.0f;
  *
  * SSAO requires that deferred rendering is enabled.
  */
-const bool       ENABLE_SSAO               = true;
-const uint32_t   SSAO_NUM_SAMPLES          = 24;
+const bool       ENABLE_SSAO               = false;
+const uint32_t   SSAO_NUM_SAMPLES          = 16;
 const float      SSAO_RADIUS               = 0.75f;
 const float      SSAO_BIAS                 = 0.05f;
-const float      SSAO_INTENSITY            = 3.0f;
+const float      SSAO_INTENSITY            = 10.0f;
 const uint32_t   SSAO_BLUR_SIZE            = 2;     // Min=0 (no blur)
 const float      SSAO_BLUR_THRESHOLD       = 0.05f; // Min > 0.0
 const float      SSAO_DOWNSAMPLING         = 1.0f;  // Min=1.0 (no downsampling)
@@ -63,7 +63,7 @@ const glm::vec4  SUN_SPECULAR              = glm::vec4(3.0f, 3.0f, 3.0f, 1.0f);
 const glm::vec4  SUN_AMBIENT               = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
 
 /* Screen Space Reflections (SSR) */
-const bool       ENABLE_SSR                = true;
+const bool       ENABLE_SSR                = false;
 const float      SSR_REFLECTION_STRENGTH   = 0.1f;  // Min > 0.0, Max=1.0
 const int        SSR_REFLECTION_ROUGHNESS  = 0;     // Min = 0
 const int32_t    SSR_MAX_SAMPLES           = 32;
@@ -75,7 +75,7 @@ const float      SSR_MAX_REFLECTION_DIST   = 0.7f;  // Min > 0.0
 const float      SUPER_SAMPLING_FACTOR     = 1.0f;  // Min=1.0 (disabled)
 
 /* Antialiasing (FXAA) */
-const bool       ENABLE_FXAA               = true;
+const bool       ENABLE_FXAA               = false;
 const float      FXAA_LUMA_MIN             = 0.1f;    // Min > 0.0, Max=1.0
 const float      FXAA_LUMA_RANGE_MIN       = 0.1312f; // Min > 0.0, Max=1.0
 const float      FXAA_SUBPX_AA             = 0.5f;    // Min=0.0 (disabled)
@@ -84,7 +84,7 @@ const float      FXAA_SUBPX_AA             = 0.5f;    // Min=0.0 (disabled)
 const bool       ENABLE_COLLISIONS         = true;
 
 /* Automatic camera */
-const bool       AUTO_CAMERA_START_ENABLED = false;
+const bool       AUTO_CAMERA_START_ENABLED = true;
 const float      AUTO_CAMERA_FADE_SPEED    = 0.005f;
 const uint32_t   AUTO_CAMERA_BLANK_FRAMES  = 90;
 const VkdfKey    AUTO_CAMERA_ENABLE_KEY    = VKDF_KEY_A;
