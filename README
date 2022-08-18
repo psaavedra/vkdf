@@ -91,4 +91,8 @@ generated shader files are re-generated again:
 $ make clean
 $ make -j
 
+Support on full wayland environments are only working using SDL.
+
+
 Enjoy!
+
