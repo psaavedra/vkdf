@@ -42,7 +42,7 @@ libvkdf_la_CXXFLAGS = \
     -D_GNU_SOURCE \
     @VKDF_DEFINES@ \
     @DEFS@ \
-    -DVKDF_DATA_DIR=\"$(abs_top_builddir)/data/\"
+    -DVKDF_DATA_DIR=\"/mnt/vulkan-demos/demo-vulkan-sponza/data/\"
 
 libvkdf_la_LIBADD = \
     @PLATFORM_LIBS@ \
